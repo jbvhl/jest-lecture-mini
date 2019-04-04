@@ -1,8 +1,17 @@
-export function toggle() {
-  // Build me!
+export function toggle(value) {
+  return !value;
 }
-export function addToCart() {
-  // Build me!
+export function addToCart(cart, itemToAdd) {
+  const newCart = [...cart]
+  const newItemToAdd = {...itemToAdd}
+  const matchingIndex = newCart.findIndex(item => item.id === newItemToAdd.id);
+  if (matchingIndex === -1) {
+    newItemToAdd.qty = 1;
+    newCart.push(newItemToAdd)
+  } else {
+    newCart[matchingIndex].qty++
+  }
+  return newCart
 }
 export function calculateSubTotal() {
   // Build me!

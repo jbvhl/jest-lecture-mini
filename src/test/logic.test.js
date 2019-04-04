@@ -1,4 +1,4 @@
-import {} from '../Logic/logic';
+import {toggle, addToCart} from '../Logic/logic';
 
 const product = {
   id: 1,
@@ -7,10 +7,54 @@ const product = {
   image: 'http://goodtogostore.com/product-package-images/192837494.jpg',
 };
 
-describe('Tests Toggle Show button', () => {
+describe('Tests Toggle func', () => {
+  it('should be a func', () => {
+    expect(typeof toggle).toBe('function')
+  })
+  it('should return boolean', () => {
+    const result = toggle();
+    expect(typeof result).toBe('boolean')
+  })
+  it('should return false if given true', () => {
+    const result = toggle(true);
+    expect(result).toBe(false)
+  })
+  it('if given falsey shoudl return true', () => {
+    const result = toggle('');
+    expect(result).toBeTruthy()
+  })
 });
 
-describe('Can add item to cart', () => {});
+describe.only('Can add item to cart', () => {
+  test('should return arr', () => {
+    const result = addToCart([], product);
+    expect(result).toBeInstanceOf(Array)
+  })
+  it('return array should have length = 1', () => {
+    const result = addToCart([], product);
+    expect(result).toHaveLength(1)
+  })
+  it('should add quanitity prop to product', () => {
+    const result = addToCart([], product)
+    expect(result[0]).toHaveProperty('qty')
+  })
+  test('++ quantity if same product is +', () => {
+    const result = addToCart([], product);
+    const endCart = addToCart(result, product);
+    expect(endCart[0]).toHaveProperty('qty', 2)
+  });
+
+  it('shouldnt modify arr passed in', () => {
+    const cart = [];
+    const newCart = addToCart(cart, product)
+    expect(cart).toHaveLength(0)
+  })
+
+  test('doesnt modify prod passed in', () => {
+    addToCart([], product);
+    expect(product).not.toHaveProperty('qty');
+  })
+});
 
 describe('can remove item', () => {
   // Using a beforeEach set a cart array to have 2 or more items of varrying quality
